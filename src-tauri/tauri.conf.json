@@ -24,6 +24,7 @@
   "bundle": {
     "active": true,
     "targets": ["nsis", "msi"],
+    "icon": ["icons/icon.ico"],
     "shortDescription": "Development environment for Pin Browser"
   }
 }
