@@ -1,0 +1,41 @@
+name: Build PinCode for Windows
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "frontend/**"
+      - "src-tauri/**"
+      - "package.json"
+      - "vite.config.js"
+      - ".github/workflows/build-windows.yml"
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Install WebView2
+        uses: microsoft/setup-msbuild@v2
+      - name: Install frontend dependencies
+        run: npm install
+      - name: Build Windows installers
+        run: npm run tauri -- build
+      - name: Upload MSI and EXE installers
+        uses: actions/upload-artifact@v4
+        with:
+          name: PinCode-Windows-Installers
+          path: |
+            src-tauri/target/release/bundle/msi/*.msi
+            src-tauri/target/release/bundle/nsis/*.exe
+          if-no-files-found: error
+          retention-days: 14
