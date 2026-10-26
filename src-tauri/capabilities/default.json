@@ -13,6 +13,8 @@
     "fs:allow-read-text-file",
     "fs:allow-write-text-file",
     "fs:allow-mkdir",
-    "core:path:default"
+    "core:path:default",
+    "fs:allow-rename",
+    "fs:allow-remove"
   ]
 }
