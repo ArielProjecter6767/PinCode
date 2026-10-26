@@ -32,3 +32,7 @@ The current UI can also be opened directly from `frontend/index.html` for a quic
 
 ## Important
 A `.pin` address is an application-level domain handled by Pin Browser/PinCode, not a public DNS domain by itself. Public access requires a resolver/hosting service and routing configuration. Cloud sync and publishing require a configured MongoDB connection and a valid account session.
+
+
+## Native Windows workspace (in progress)
+The desktop branch `feature/native-workspace-files` adds a native **Open folder** dialog and reads supported text files from the selected project directory. Saving the active file writes its current contents back to disk. This feature is still under review: verify the Windows build and test opening, editing, and saving a temporary project before relying on it for important files.
