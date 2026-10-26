@@ -10,6 +10,14 @@ on:
       - "package.json"
       - "vite.config.js"
       - ".github/workflows/build-windows.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "frontend/**"
+      - "src-tauri/**"
+      - "package.json"
+      - "vite.config.js"
+      - ".github/workflows/build-windows.yml"
 
 jobs:
   build-windows:
