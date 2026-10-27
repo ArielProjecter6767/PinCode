@@ -261,7 +261,7 @@ For edit_file, return the COMPLETE intended file content, not a patch or excerpt
         try:
             parsed = json.loads(raw_answer)
         except (TypeError, ValueError):
-            match = re.search(r"\\{.*\\}", raw_answer, re.DOTALL)
+            match = re.search(r"\{.*\}", raw_answer, re.DOTALL)
             if not match:
                 return {"ok": True, "answer": raw_answer, "changes": [], "model": GROQ_MODEL}
             parsed = json.loads(match.group(0))
@@ -277,7 +277,7 @@ For edit_file, return the COMPLETE intended file content, not a patch or excerpt
             if not isinstance(action, dict):
                 continue
             kind = action.get("type")
-            path = str(action.get("path", "")).replace("\\\\", "/").strip("/")
+            path = str(action.get("path", "")).replace("\\", "/").strip("/")
             content = action.get("content")
             if kind not in ("edit_file", "create_file") or not path or not isinstance(content, str):
                 continue
