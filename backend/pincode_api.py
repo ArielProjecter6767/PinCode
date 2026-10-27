@@ -132,6 +132,33 @@ async def health():
     return {"ok": database == "connected", "service": "pincode-cloud", "database": database,
             "shared_auth": bool(serializer), "ai_configured": bool(GROQ_API_KEY)}
 
+class FederationCodeInput(BaseModel):
+    code: str = Field(min_length=20, max_length=100)
+
+@app.post("/api/auth/exchange")
+async def exchange_federation_code(payload: FederationCodeInput):
+    if not serializer:
+        raise HTTPException(503, "SESSION_SECRET is not configured in PinCode Cloud.")
+    async with httpx.AsyncClient(timeout=15) as client:
+        try:
+            response = await client.post(
+                "https://pinian-federation.onrender.com/api/pincode/exchange",
+                json={"code": payload.code},
+            )
+        except httpx.HTTPError as exc:
+            raise HTTPException(502, "Не удалось связаться с Пинийской Федерацией. Попробуй ещё раз.") from exc
+    try:
+        data = response.json()
+    except ValueError:
+        data = {}
+    if response.status_code >= 400:
+        raise HTTPException(response.status_code, data.get("detail", "Одноразовый код не принят. Создай новый код в Федерации."))
+    uid = data.get("uid")
+    if not uid:
+        raise HTTPException(502, "Федерация не вернула ID аккаунта.")
+    token = serializer.dumps({"uid": str(uid)})
+    return {"ok": True, "token": token, "user": {"id": str(uid), "first_name": data.get("first_name", ""), "last_name": data.get("last_name", "")}}
+
 @app.get("/api/auth/me")
 async def auth_me(request: Request):
     user = await current_user(request)
