@@ -4,13 +4,18 @@ services:
     runtime: python
     rootDir: backend
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    startCommand: uvicorn pincode_api:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
     envVars:
-      - key: MONGODB_URI
+      - key: MONGO_URL
         sync: false
-      - key: PINCODE_DATABASE
-        value: pincode
-      - key: PINCODE_SECRET
+      - key: MONGO_DB_NAME
+        value: pinian_federation
+      - key: SESSION_SECRET
         sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
       - key: PINCODE_ALLOWED_ORIGINS
-        value: http://localhost:1420,http://127.0.0.1:1420,http://localhost:5173
+        value: http://localhost:1420,http://127.0.0.1:1420,tauri://localhost,http://tauri.localhost
