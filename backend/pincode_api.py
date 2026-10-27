@@ -58,10 +58,8 @@ def now():
 
 def current_uid(request: Request) -> str:
     if not serializer:
-        raise HTTPException(503, "SESSION_SECRET must match the Pinian Federation service.")
-    token = request.cookies.get("pinian_session")
-    if not token:
-        token = request.headers.get("x-pinian-session")
+        raise HTTPException(503, "SESSION_SECRET must be configured to sign PinCode sessions.")
+    token = request.headers.get("x-pinian-session") or request.cookies.get("pinian_session")
     if not token:
         raise HTTPException(401, "Sign in to Pinian Federation first. Shared login is not available in this session.")
     try:
