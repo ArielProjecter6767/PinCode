@@ -63,7 +63,7 @@ def current_uid(request: Request) -> str:
     if not token:
         raise HTTPException(401, "Sign in to Pinian Federation first. Shared login is not available in this session.")
     try:
-        uid = serializer.loads(token, max_age=2592000).get("uid")
+        uid = serializer.loads(token, max_age=31536000).get("uid")
     except (BadSignature, SignatureExpired):
         raise HTTPException(401, "Pinian Federation session is invalid or expired.")
     if not uid:
