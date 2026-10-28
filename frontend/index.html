@@ -84,10 +84,10 @@ function runPreview(){
  if(!entry){log("Run: в проекте нет HTML-файла. Создай index.html.");return;}
  let source=files[entry]||"";
  const escapeClosing=(value,tag)=>String(value).replace(new RegExp("</"+tag,"gi"),"<\\/"+tag);
- const css=Object.keys(files).filter(n=>/\.css$/i.test(n)).map(n=>"<style>\n"+escapeClosing(files[n],"style")+"\n</style>").join("\n");
- const js=Object.keys(files).filter(n=>/\.(?:js|mjs)$/i.test(n)).map(n=>"<script>\n"+escapeClosing(files[n],"script")+"\n</script>").join("\\n");
- if(css){if(/<\/head\s*>/i.test(source))source=source.replace(/<\/head\s*>/i,css+"</head>");else source=css+source;}
- if(js){if(/<\/body\s*>/i.test(source))source=source.replace(/<\/body\s*>/i,js+"</body>");else source+=js;}
+ const css=Object.keys(files).filter(n=>/\.css$/i.test(n)).map(n=>"<style>\n"+escapeClosing(files[n],"style")+"\n<"+"/style>").join("\n");
+ const js=Object.keys(files).filter(n=>/\.(?:js|mjs)$/i.test(n)).map(n=>"<script>\n"+escapeClosing(files[n],"script")+"\n<"+"/script>").join("\n");
+ if(css){if(/<\/head\s*>/i.test(source))source=source.replace(/<\/head\s*>/i,css+"<"+"/head>");else source=css+source;}
+ if(js){if(/<\/body\s*>/i.test(source))source=source.replace(/<\/body\s*>/i,js+"<"+"/body>");else source+=js;}
  let modal=document.getElementById("pincodeRunPreview");if(modal)modal.remove();
  modal=document.createElement("div");modal.id="pincodeRunPreview";modal.style.cssText="position:fixed;inset:0;z-index:30000;background:#000c;display:flex;flex-direction:column;padding:16px;box-sizing:border-box";
  const bar=document.createElement("div");bar.style.cssText="display:flex;align-items:center;gap:12px;padding:10px;background:#252526;color:#eee;border-radius:8px 8px 0 0";
