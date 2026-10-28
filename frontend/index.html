@@ -84,8 +84,8 @@ function runPreview(){
  if(!entry){log("Run: в проекте нет HTML-файла. Создай index.html.");return;}
  let source=files[entry]||"";
  const escapeClosing=(value,tag)=>String(value).replace(new RegExp("</"+tag,"gi"),"<\\/"+tag);
- const css=Object.keys(files).filter(n=>/\.css$/i.test(n)).map(n=>"<style>\\n"+escapeClosing(files[n],"style")+"\\n</style>").join("\\n");
- const js=Object.keys(files).filter(n=>/\.(?:js|mjs)$/i.test(n)).map(n=>"<script>\\n"+escapeClosing(files[n],"script")+"\\n</script>").join("\\n");
+ const css=Object.keys(files).filter(n=>/\.css$/i.test(n)).map(n=>"<style>\n"+escapeClosing(files[n],"style")+"\n</style>").join("\n");
+ const js=Object.keys(files).filter(n=>/\.(?:js|mjs)$/i.test(n)).map(n=>"<script>\n"+escapeClosing(files[n],"script")+"\n</script>").join("\\n");
  if(css){if(/<\/head\s*>/i.test(source))source=source.replace(/<\/head\s*>/i,css+"</head>");else source=css+source;}
  if(js){if(/<\/body\s*>/i.test(source))source=source.replace(/<\/body\s*>/i,js+"</body>");else source+=js;}
  let modal=document.getElementById("pincodeRunPreview");if(modal)modal.remove();
